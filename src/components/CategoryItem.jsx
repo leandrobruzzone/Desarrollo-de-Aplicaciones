@@ -1,13 +1,18 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
 import React from "react";
 import Card from "./Card";
 import { colors } from "../global/colors";
 
-const CategoryItem = ({ category, setCategorySelected }) => {
+const CategoryItem = ({ category, navigation }) => {
+  const { width, height } = useWindowDimensions();
   return (
-    <Pressable onPress={() => setCategorySelected(category)}>
+    <Pressable
+      onPress={() => navigation.navigate("Lista de Categorías", { category })}
+    >
       <Card>
-        <Text style={styles.text}>{category}</Text>
+        <Text style={width < 400 ? styles.textMin : styles.text}>
+          {category}
+        </Text>
       </Card>
     </Pressable>
   );
@@ -19,8 +24,13 @@ const styles = StyleSheet.create({
   text: {
     color: colors.textPrimary2,
     fontFamily: "RobotoRegular",
-    fontSize: 20,
-    textAlign: "center",
+    fontSize: 21,
+    fontWeight: "400",
+  },
+  textMin: {
+    color: colors.textPrimary2,
+    fontFamily: "RobotoRegular",
+    fontSize: 18,
     fontWeight: "400",
   },
 });

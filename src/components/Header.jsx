@@ -15,12 +15,13 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.primary1,
+    paddingTop: 25,
+    paddingBottom: 10,
   },
   text: {
     color: colors.textPrimary1,
     fontSize: 30,
     textAlign: "center",
-    fontWeight: "bold",
-    fontStyle: "italic",
+    fontFamily: "RobotoBoldItalic",
   },
 });

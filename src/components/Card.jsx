@@ -10,8 +10,12 @@ export default Card;
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    margin: 15,
+    paddingHorizontal: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

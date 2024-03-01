@@ -15,9 +15,7 @@ const ProductItem = ({ product, navigation }) => {
 
   return (
     <Pressable
-      onPress={() =>
-        navigation.navigate("Detalle de Producto", { id: product.id })
-      }
+      onPress={() => navigation.navigate("ItemDetail", { id: product.id })}
     >
       <Card>
         <View style={styles.content}>

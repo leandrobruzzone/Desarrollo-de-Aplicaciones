@@ -6,7 +6,6 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import React, { useEffect } from "react";
 import Card from "./Card";
 import { colors } from "../global/colors";
 
@@ -29,7 +28,7 @@ const ProductItem = ({ product, navigation }) => {
         <Image
           style={styles.image}
           resizeMode="stretch"
-          source={{ uri: product.images[0] }}
+          source={{ uri: product.thumbnail }}
         />
       </Card>
     </Pressable>

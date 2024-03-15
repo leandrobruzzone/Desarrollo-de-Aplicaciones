@@ -9,11 +9,19 @@ import {
 import React, { useEffect, useState } from "react";
 import allProducts from "../assets/data/products.json";
 import { colors } from "../global/colors";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/shop/cartSlice";
 
-const ItemDetail = ({ route }) => {
+const ItemDetail = ({ navigation, route }) => {
   const { width, height } = useWindowDimensions();
   const [product, setProduct] = useState(null);
   const { id } = route.params;
+
+  const dispatch = useDispatch();
+
+  const onAddCart = () => {
+    dispatch(addItem({ ...product, quantity: 1 }));
+  };
 
   useEffect(() => {
     const productFinded = allProducts.find((product) => product.id === id);
@@ -47,9 +55,9 @@ const ItemDetail = ({ route }) => {
             <Text style={width < 400 ? styles.textPriceMin : styles.textPrice}>
               ${product.price}
             </Text>
-            <Pressable style={styles.buy}>
+            <Pressable style={styles.buy} onPress={onAddCart}>
               <Text style={width < 400 ? styles.buyTextMin : styles.buyText}>
-                Comprar
+                Añadir al Carrito
               </Text>
             </Pressable>
           </View>
@@ -117,11 +125,11 @@ const styles = StyleSheet.create({
   buy: {
     padding: 10,
     borderRadius: 6,
-    backgroundColor: "green",
+    backgroundColor: "#007bff",
   },
   buyTextMin: {
     fontSize: 19,
-    color: "white",
+    color: "#ffffff",
     fontFamily: "RobotoRegular",
   },
   buyText: {

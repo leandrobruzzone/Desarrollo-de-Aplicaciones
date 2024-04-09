@@ -2,7 +2,7 @@ import { StyleSheet, Text, useWindowDimensions } from "react-native";
 import { colors } from "../global/colors";
 
 const TextDescriptionCard = ({ description }) => {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   return (
     <Text

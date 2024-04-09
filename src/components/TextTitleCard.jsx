@@ -2,7 +2,7 @@ import { StyleSheet, Text, useWindowDimensions } from "react-native";
 import { colors } from "../global/colors";
 
 const TextTitleCard = ({ title }) => {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   return (
     <Text style={width < 400 ? styles.titleMin : styles.title}>{title}</Text>

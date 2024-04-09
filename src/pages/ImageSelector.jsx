@@ -1,9 +1,12 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { setCameraImage } from "../features/auth/authSlice";
 import { usePostProfileImageMutation } from "../services/shopService";
+import CancelButton from "../components/CancelButton";
+import ConfirmButton from "../components/ConfirmButton";
+import TextDescriptionCard from "../components/TextDescriptionCard";
 
 const ImageSelector = ({ navigation }) => {
   const [image, setImage] = useState(null);
@@ -45,20 +48,16 @@ const ImageSelector = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {image ? (
-        <>
+        <View>
           <Image source={{ uri: image }} style={styles.image} />
-          <Pressable onPress={pickImage}>
-            <Text>Toma otra foto</Text>
-          </Pressable>
-          <Pressable onPress={confirmImage}>
-            <Text>Confirmar foto</Text>
-          </Pressable>
-        </>
+          <CancelButton title={"Repetir toma"} onPress={pickImage} />
+          <ConfirmButton title={"Confirmar foto"} onPress={confirmImage} />
+        </View>
       ) : (
         <View>
           <Pressable style={styles.noPhotoContainer} onPress={pickImage}>
-            <Text>No hay foto para mostrar...</Text>
-            <Text>Toma una foto</Text>
+            <TextDescriptionCard description={"No hay foto para mostrar..."} />
+            <TextDescriptionCard description={"Toma una foto"} />
           </Pressable>
         </View>
       )}
@@ -70,20 +69,20 @@ export default ImageSelector;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    paddingVertical: 30,
     alignItems: "center",
-    marginTop: 30,
-    gap: 20,
   },
   image: {
     width: 200,
     height: 200,
+    borderRadius: 10,
+    marginBottom: 10,
   },
   noPhotoContainer: {
     width: 200,
     height: 200,
+    borderRadius: 10,
     borderWidth: 2,
-    padding: 10,
     justifyContent: "center",
     alignItems: "center",
   },

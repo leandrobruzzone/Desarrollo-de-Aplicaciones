@@ -1,29 +1,17 @@
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import Card from "./Card";
-import { colors } from "../global/colors";
+import TextTitleCard from "../components/TextTitleCard";
+import TextDescriptionCard from "../components/TextDescriptionCard";
 
 const ProductItem = ({ product, navigation }) => {
-  const { width, height } = useWindowDimensions();
-
   return (
     <Pressable
       onPress={() => navigation.navigate("ItemDetail", { id: product.id })}
     >
       <Card>
         <View style={styles.content}>
-          <Text style={width < 400 ? styles.titleMin : styles.title}>
-            {product.title}
-          </Text>
-          <Text style={width < 400 ? styles.textMin : styles.text}>
-            {product.description}
-          </Text>
+          <TextTitleCard title={product.title} />
+          <TextDescriptionCard description={product.description} />
         </View>
         <Image
           style={styles.image}
@@ -41,30 +29,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     width: "80%",
-  },
-  titleMin: {
-    color: colors.textPrimary2,
-    fontSize: 18,
-    fontWeight: "400",
-    fontFamily: "RobotoRegular",
-  },
-  title: {
-    color: colors.textPrimary2,
-    fontSize: 21,
-    fontWeight: "400",
-    fontFamily: "RobotoRegular",
-  },
-  textMin: {
-    color: colors.textPrimary2,
-    fontSize: 12,
-    fontWeight: "300",
-    fontFamily: "RobotoRegular",
-  },
-  text: {
-    color: colors.textPrimary2,
-    fontSize: 15,
-    fontWeight: "300",
-    fontFamily: "RobotoRegular",
   },
   image: {
     minHeight: 90,

@@ -1,36 +1,34 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import Card from "./Card";
+import TextDescriptionOrder from "../components/TextDescriptionOrder";
 
 const OrderItem = ({ item }) => {
-  const total = item.items.reduce(
-    (acc, currentItem) => (acc += currentItem.quantity * currentItem.price),
-    0
-  );
+  let createdAtDate;
+  if (item.createdAt instanceof Date) {
+    createdAtDate = item.createdAt;
+  } else if (typeof item.createdAt === "string") {
+    createdAtDate = new Date(item.createdAt);
+  }
+
+  const formattedDate =
+    createdAtDate && !isNaN(createdAtDate.getTime())
+      ? createdAtDate.toLocaleString()
+      : "Fecha inválida";
+
+  const total = item.total || 0;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.date}>
-        {new Date(item.createdAt).toLocaleString()}
-      </Text>
-      <Text style={styles.total}>Total: ${total.toFixed(2)}</Text>
-    </View>
+    <Card style={styles.card}>
+      <TextDescriptionOrder description={formattedDate} />
+      <TextDescriptionOrder description={`Total: $${total}`} />
+    </Card>
   );
 };
 
 export default OrderItem;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-  },
-  date: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  total: {
-    fontSize: 14,
-    marginTop: 5,
+  card: {
+    justifyContent: "space-between",
   },
 });

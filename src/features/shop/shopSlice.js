@@ -1,13 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import allProducts from "../../assets/data/products.json";
-import allCategories from "../../assets/data/categories.json";
 
 export const shopSlice = createSlice({
   name: "shop",
   initialState: {
     value: {
-      products: allProducts,
-      categories: allCategories,
+      products: [],
+      categories: [],
       categorySelected: "",
       productIdSelected: null,
       productsFilteredByCategory: [],
@@ -16,6 +14,9 @@ export const shopSlice = createSlice({
   reducers: {
     setCategorySelected: (state, action) => {
       const categorySelected = action.payload;
+      const allProducts = state.value.products;
+      const allCategories = state.value.categories;
+
       const productsFiltered = allProducts.filter(
         (product) => product.category === categorySelected
       );
@@ -25,9 +26,15 @@ export const shopSlice = createSlice({
     setProductIdSelected: (state, action) => {
       state.value.productIdSelected = action.payload;
     },
+    setInitialData: (state, action) => {
+      const { products, categories } = action.payload;
+      state.value.products = products;
+      state.value.categories = categories;
+    },
   },
 });
 
-export const { setCategorySelected, setProductIdSelected } = shopSlice.actions;
+export const { setCategorySelected, setProductIdSelected, setInitialData } =
+  shopSlice.actions;
 
 export default shopSlice.reducer;

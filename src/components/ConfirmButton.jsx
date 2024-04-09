@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
-const SubmitButton = ({ onPress, title }) => {
+const ConfirmButton = ({ onPress, title }) => {
   return (
     <Pressable onPress={onPress} style={styles.button}>
       <Text style={styles.text}>{title}</Text>
@@ -8,20 +8,21 @@ const SubmitButton = ({ onPress, title }) => {
   );
 };
 
-export default SubmitButton;
+export default ConfirmButton;
 
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#007bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 10,
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center",
-    padding: 8,
-    width: "80%",
-    marginTop: 20,
   },
   text: {
-    color: "white",
-    fontSize: 22,
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

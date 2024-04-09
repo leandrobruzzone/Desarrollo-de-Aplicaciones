@@ -9,14 +9,23 @@ export const shopApi = createApi({
       query: (category) =>
         `products.json?orderBy="category"&equalTo="${category}"`,
     }),
+    getProductById: builder.query({
+      query: (id) => `products/${id - 1}.json`,
+    }),
     getCategories: builder.query({
       query: () => "categories.json",
+    }),
+    getOrders: builder.query({
+      query: () => "orders.json",
     }),
     postOrder: builder.mutation({
       query: ({ ...order }) => ({
         url: "orders.json",
         method: "POST",
-        body: order,
+        body: {
+          ...order,
+          createdAt: new Date().toISOString(),
+        },
       }),
     }),
     getProfileImage: builder.query({
@@ -31,13 +40,31 @@ export const shopApi = createApi({
         },
       }),
     }),
+    getUserLocation: builder.query({
+      query: (localId) => `locations/${localId}.json`,
+    }),
+    postUserLocation: builder.mutation({
+      query: ({ localId, location }) => ({
+        url: `locations/${localId}.json`,
+        method: "PUT",
+        body: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          address: location.address,
+        },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetProductsByCategoryQuery,
   useGetCategoriesQuery,
+  useGetOrdersQuery,
   usePostOrderMutation,
   useGetProfileImageQuery,
   usePostProfileImageMutation,
+  useGetUserLocationQuery,
+  usePostUserLocationMutation,
+  useGetProductByIdQuery,
 } = shopApi;

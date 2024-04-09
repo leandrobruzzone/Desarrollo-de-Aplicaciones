@@ -1,15 +1,12 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import CategoryItem from "./CategoryItem";
-import Counter from "./Counter";
-import { useSelector } from "react-redux";
 import { useGetCategoriesQuery } from "../services/shopService";
 
 const Categories = ({ navigation }) => {
-  const { data, isLoading, error } = useGetCategoriesQuery();
+  const { data } = useGetCategoriesQuery();
 
   return (
     <View style={styles.container}>
-      <Counter />
       <FlatList
         style={styles.list}
         data={data}
@@ -30,6 +27,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   list: {
-    paddingVertical: 10,
+    marginVertical: 10,
   },
 });

@@ -1,13 +1,15 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import InputForm from "../components/InputForm";
-import { useSignUpMutation } from "../services/authService";
 import SubmitButton from "../components/SubmitButton";
+import NavigationBtn from "../components/NavigationBtn";
+import { useSignUpMutation } from "../services/authService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/auth/authSlice";
 import { signupSchema } from "../validations/signupSchema";
+import TextTitle from "../components/TextTitle";
 
-const Signup = () => {
+const Signup = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [errorMail, setErrorMail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,11 @@ const Signup = () => {
     }
 
     try {
-      signupSchema.validateSync({ password, confirmPassword, email });
+      setErrorMail("");
+      setErrorPassword("");
+      setErrorConfirmPassword("");
+
+      signupSchema.validateSync({ email, password, confirmPassword });
       triggerSignup({ email, password });
     } catch (err) {
       switch (err.path) {
@@ -48,14 +54,15 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    console.log(result);
     if (result.data) {
-      dispatch(setUser(result));
+      dispatch(setUser(result.data));
     }
   }, [result]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registro</Text>
+      <TextTitle title={"Registro de usuario"} />
       <InputForm
         label={"Correo electrónico"}
         error={errorMail}
@@ -82,7 +89,15 @@ const Signup = () => {
         }}
         isSecure={true}
       />
-      <SubmitButton title={"Registrar"} onPress={onSubmit} />
+      {result.isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <SubmitButton title={"Registrar usuario"} onPress={onSubmit} />
+      )}
+      <NavigationBtn
+        title={"Iniciar sesión"}
+        onPress={() => navigation.navigate("Login")}
+      />
     </View>
   );
 };
@@ -94,10 +109,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
 });

@@ -1,70 +1,73 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Pressable,
-  useWindowDimensions,
-} from "react-native";
 import React, { useEffect, useState } from "react";
-import allProducts from "../assets/data/products.json";
-import { colors } from "../global/colors";
+import { StyleSheet, View, Image } from "react-native";
 import { useDispatch } from "react-redux";
 import { addItem } from "../features/shop/cartSlice";
+import Counter from "../components/Counter";
+import { reset } from "../features/counter/counterSlice";
+import ConfirmButton from "../components/ConfirmButton";
+import TextIsSuccess from "../components/TextIsSuccess";
+import Loader from "../components/Loader";
+import TextTitle from "../components/TextTitle";
+import TextDescription from "../components/TextDescription";
+import TextEmpty from "../components/TextEmpty";
+import { useGetProductByIdQuery } from "../services/shopService";
 
-const ItemDetail = ({ navigation, route }) => {
-  const { width, height } = useWindowDimensions();
-  const [product, setProduct] = useState(null);
+const ItemDetail = ({ route }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const { id } = route.params;
-
   const dispatch = useDispatch();
 
+  const { data: product, isLoading: loadingProduct } =
+    useGetProductByIdQuery(id);
+
+  useEffect(() => {
+    setIsLoading(loadingProduct);
+  }, [loadingProduct]);
+
   const onAddCart = () => {
-    dispatch(addItem({ ...product, quantity: 1 }));
+    setIsLoading(true);
+    setTimeout(() => {
+      dispatch(addItem({ ...product, quantity: quantity }));
+      setIsLoading(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000);
+    }, 1000);
   };
 
   useEffect(() => {
-    const productFinded = allProducts.find((product) => product.id === id);
-    setProduct(productFinded);
-  }, [id]);
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
 
   return (
     <View style={{ flex: 1 }}>
       {product ? (
         <View style={styles.container}>
+          <TextTitle title={product.title} />
           <Image
-            style={width < 400 ? styles.imageMin : styles.image}
+            style={styles.image}
             resizeMode="stretch"
             source={{ uri: product.images[0] }}
           />
           <View style={styles.textContainer}>
-            <Text
-              style={
-                width < 400 ? styles.descriptionTextMin : styles.descriptionText
-              }
-            >
-              {product.title}
-            </Text>
-            <Text
-              style={
-                width < 400 ? styles.descriptionTextMin : styles.descriptionText
-              }
-            >
-              {product.description}
-            </Text>
-            <Text style={width < 400 ? styles.textPriceMin : styles.textPrice}>
-              ${product.price}
-            </Text>
-            <Pressable style={styles.buy} onPress={onAddCart}>
-              <Text style={width < 400 ? styles.buyTextMin : styles.buyText}>
-                Añadir al Carrito
-              </Text>
-            </Pressable>
+            <TextDescription description={product.description} />
+            <TextTitle title={`$${product.price}`} />
+            <Counter quantity={quantity} setQuantity={setQuantity} />
+            <ConfirmButton title={"Añadir al Carrito"} onPress={onAddCart} />
           </View>
+          {isLoading && <Loader />}
+          {isSuccess && (
+            <TextIsSuccess description="Producto añadido con éxito" />
+          )}
         </View>
       ) : (
         <View>
-          <Text>Cargando...</Text>
+          <TextEmpty description={"Cargando..."} />
         </View>
       )}
     </View>
@@ -79,12 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     height: "100%",
-  },
-  imageMin: {
-    width: "75%",
-    height: "35%",
-    marginVertical: 15,
-    borderRadius: 10,
+    paddingVertical: 15,
   },
   image: {
     width: "80%",
@@ -97,44 +95,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 6,
-  },
-  descriptionTextMin: {
-    fontSize: 13,
-    paddingVertical: 3,
-    fontFamily: "RobotoRegular",
-    color: colors.textPrimary1,
-  },
-  descriptionText: {
-    fontSize: 16,
-    paddingVertical: 3,
-    fontFamily: "RobotoRegular",
-    color: colors.textPrimary1,
-  },
-  textPriceMin: {
-    fontSize: 21,
-    paddingVertical: 5,
-    fontFamily: "RobotoRegular",
-    color: colors.textPrimary1,
-  },
-  textPrice: {
-    fontSize: 25,
-    paddingVertical: 5,
-    fontFamily: "RobotoRegular",
-    color: colors.textPrimary1,
-  },
-  buy: {
-    padding: 10,
-    borderRadius: 6,
-    backgroundColor: "#007bff",
-  },
-  buyTextMin: {
-    fontSize: 19,
-    color: "#ffffff",
-    fontFamily: "RobotoRegular",
-  },
-  buyText: {
-    fontSize: 22,
-    color: "white",
-    fontFamily: "RobotoRegular",
   },
 });

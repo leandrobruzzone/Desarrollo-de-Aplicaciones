@@ -5,21 +5,17 @@ import Search from "../components/Search";
 import { useSelector } from "react-redux";
 import { useGetProductsByCategoryQuery } from "../services/shopService";
 
-function ItemListCategories({ navigation }) {
+const ItemListCategories = ({ navigation }) => {
   const [products, setProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
 
   const category = useSelector(
     (state) => state.shopReducer.value.categorySelected
   );
-  const {
-    data: productsFilteredByCategory,
-    isLoading,
-    error,
-  } = useGetProductsByCategoryQuery(category);
+  const { data: productsFilteredByCategory } =
+    useGetProductsByCategoryQuery(category);
 
   useEffect(() => {
-    console.log(productsFilteredByCategory);
     if (productsFilteredByCategory) {
       const productsRaw = Object.values(productsFilteredByCategory);
       const productsFiltered = productsRaw.filter((product) =>
@@ -41,13 +37,13 @@ function ItemListCategories({ navigation }) {
       />
     </View>
   );
-}
+};
 
 export default ItemListCategories;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 10,
+    marginBottom: 10,
   },
 });

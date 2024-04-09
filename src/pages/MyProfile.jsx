@@ -1,6 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
+import NavigationBtn from "../components/NavigationBtn";
 
 const MyProfile = ({ navigation }) => {
   const { profileImage, imageCamera } = useSelector(
@@ -24,12 +24,14 @@ const MyProfile = ({ navigation }) => {
           />
         </>
       )}
-      <Pressable
-        style={styles.button}
+      <NavigationBtn
+        title={"Añadir foto de perfil"}
         onPress={() => navigation.navigate("Image Selector")}
-      >
-        <Text style={styles.text}>Añadir foto de perfil</Text>
-      </Pressable>
+      />
+      <NavigationBtn
+        title={"Mis direcciones"}
+        onPress={() => navigation.navigate("Location Selector")}
+      />
     </View>
   );
 };
@@ -38,23 +40,13 @@ export default MyProfile;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    gap: 15,
+    paddingVertical: 30,
     alignItems: "center",
     justifyContent: "flex-start",
   },
   image: {
-    width: 100,
-    height: 100,
-  },
-  button: {
-    width: "80%",
-    elevation: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-  },
-  text: {
-    fontSize: 18,
+    width: 200,
+    height: 200,
+    borderRadius: 10,
   },
 });

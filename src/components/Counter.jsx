@@ -1,25 +1,24 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import {
-  increment,
-  decrement,
-  incrementByAmount,
-  reset,
-} from "../features/counter/counterSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-const Counter = () => {
-  const count = useSelector((state) => state.counterReducer.value);
+const Counter = ({ quantity, setQuantity }) => {
+  const incrementCounter = () => {
+    setQuantity(quantity + 1);
+  };
 
-  const dispatch = useDispatch();
+  const decrementCounter = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <Pressable onPress={() => dispatch(decrement())} style={styles.button}>
+        <Pressable onPress={decrementCounter} style={styles.button}>
           <Text style={styles.buttonText}>-</Text>
         </Pressable>
-        <Text>{count}</Text>
-        <Pressable onPress={() => dispatch(increment())} style={styles.button}>
+        <Text style={styles.quantity}>Cantidad: {quantity}</Text>
+        <Pressable onPress={incrementCounter} style={styles.button}>
           <Text style={styles.buttonText}>+</Text>
         </Pressable>
       </View>
@@ -31,17 +30,12 @@ export default Counter;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    paddingVertical: 15,
+    paddingVertical: 12,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
   },
   button: {
     width: 36,
@@ -52,20 +46,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  span: {
-    width: "30%",
-    padding: 10,
-    textAlign: "center",
-    fontSize: 20,
-  },
-  spanInput: {
-    width: "30%",
-    padding: 10,
-    textAlign: "center",
-    fontSize: 15,
-  },
   buttonText: {
-    fontSize: 15,
+    fontSize: 18,
     color: "white",
+  },
+  quantity: {
+    fontSize: 24,
+    marginHorizontal: 6,
   },
 });

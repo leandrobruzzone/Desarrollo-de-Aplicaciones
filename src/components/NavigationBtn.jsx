@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 
-const SubmitButton = ({ onPress, title }) => {
+const NavigationBtn = ({ onPress, title }) => {
   return (
     <Pressable onPress={onPress} style={styles.button}>
       <Text style={styles.text}>{title}</Text>
@@ -8,11 +8,11 @@ const SubmitButton = ({ onPress, title }) => {
   );
 };
 
-export default SubmitButton;
+export default NavigationBtn;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#ffe600",
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center",
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   text: {
-    color: "white",
-    fontSize: 22,
+    color: "black",
+    fontSize: 20,
   },
 });
